@@ -1,15 +1,19 @@
 <?php session_start();
 include "includes/config.php";
 
-if($_SESSION['admin']=='' or $_SESSION['admin']!="yes" or $_GET['rid']=="") 
- {
-    print "<META http-equiv='refresh' content='0;URL=admin-login.php'>";	
+if($_SESSION['admin']=='' or $_SESSION['admin']!="yes" or !isset($_GET['rid']))
+{
+    print "<META http-equiv='refresh' content='0;URL=admin-login.php'>";
     exit;
- }
+}
 
-$qry = "select * from model where r_id_key='".$_GET['rid']."'";
-$rs= $con->recordselect($qry);
-$row=mysqli_fetch_array($rs); 
+$rid = filter_input(INPUT_GET, 'rid', FILTER_SANITIZE_NUMBER_INT);
+$stmt = mysqli_prepare($con->linki, "select * from model where r_id_key=?");
+mysqli_stmt_bind_param($stmt, 'i', $rid);
+mysqli_stmt_execute($stmt);
+$rs = mysqli_stmt_get_result($stmt);
+$row = mysqli_fetch_array($rs);
+mysqli_stmt_close($stmt);
 
 ?> 
 

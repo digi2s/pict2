@@ -1,18 +1,23 @@
 <?php session_start();
 include "includes/config.php";
 
-$frm_action=$_REQUEST['frm_action'];
+$frm_action = filter_input(INPUT_POST, 'frm_action', FILTER_SANITIZE_STRING);
+if($frm_action === null) {
+    $frm_action = filter_input(INPUT_GET, 'frm_action', FILTER_SANITIZE_STRING);
+}
 
-if($frm_action == "rep_login") 
+if($frm_action == "rep_login")
 {
-        $username = $_POST['user'];
-        $password = base64_encode($_POST['password']);
+        $username = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_EMAIL);
+        $password = base64_encode(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING));
 
-        $qry_user = "SELECT * FROM model WHERE remail = '" . $username . "' && rpassword = '" . $password . "' && rstatus = '1'";
-
-        $rs_user = $con->recordselect($qry_user);
+        $stmt = mysqli_prepare($con->linki, "SELECT * FROM model WHERE remail = ? AND rpassword = ? AND rstatus = '1'");
+        mysqli_stmt_bind_param($stmt, 'ss', $username, $password);
+        mysqli_stmt_execute($stmt);
+        $rs_user = mysqli_stmt_get_result($stmt);
         $no_user = mysqli_num_rows($rs_user);
         $row_user = mysqli_fetch_array($rs_user);
+        mysqli_stmt_close($stmt);
        
         if($no_user <= 0) 
         {
@@ -33,38 +38,46 @@ if($frm_action == "rep_login")
             exit;
         }
 }
-else if($frm_action == "rep_change_password") 
+else if($frm_action == "rep_change_password")
 {
-        $password = base64_encode($_POST['current_password']);
+        $password = base64_encode(filter_input(INPUT_POST, 'current_password', FILTER_SANITIZE_STRING));
 
-        $qry_user = "SELECT * FROM model WHERE r_id_key = '" . $_SESSION['user_id'] . "' && rpassword = '" . $password . "'";
-        $rs_user = $con->recordselect($qry_user);
+        $stmt = mysqli_prepare($con->linki, "SELECT * FROM model WHERE r_id_key = ? AND rpassword = ?");
+        mysqli_stmt_bind_param($stmt, 'is', $_SESSION['user_id'], $password);
+        mysqli_stmt_execute($stmt);
+        $rs_user = mysqli_stmt_get_result($stmt);
         $no_user = mysqli_num_rows($rs_user);
-       
-        if($no_user <= 0) 
+        
+        if($no_user <= 0)
         {
             $_SESSION['rep_msg'] =  "Sorry you entered wrong current password.";
-            print "<META http-equiv='refresh' content='0;URL=rep-change-password.php'>";	
+            print "<META http-equiv='refresh' content='0;URL=rep-change-password.php'>";
             exit;
         }
-        else 
+        else
         {
-            $new_password =  base64_encode($_POST['new_password']);
-            $qry_update = "update `model` set rpassword='".$new_password."' where r_id_key='" . $_SESSION['user_id'] . "'";
-            $con->update($qry_update);
-            
+            $new_password =  base64_encode(filter_input(INPUT_POST, 'new_password', FILTER_SANITIZE_STRING));
+            $stmt_up = mysqli_prepare($con->linki, "UPDATE `model` SET rpassword=? WHERE r_id_key=?");
+            mysqli_stmt_bind_param($stmt_up, 'si', $new_password, $_SESSION['user_id']);
+            mysqli_stmt_execute($stmt_up);
+            mysqli_stmt_close($stmt_up);
+        
+            mysqli_stmt_close($stmt);
+
             $_SESSION['rep_msg'] =  "Password changed successfully.";
             $redirect_url = "rep-settings.php";
-            print "<META http-equiv='refresh' content='0;URL=$redirect_url'>";	
+            print "<META http-equiv='refresh' content='0;URL=$redirect_url'>";
             exit;
         }
 }
-else if($frm_action == "client_change_password") 
+else if($frm_action == "client_change_password")
 {
-        $password = base64_encode($_POST['current_password']);
+        $password = base64_encode(filter_input(INPUT_POST, 'current_password', FILTER_SANITIZE_STRING));
 
-        $qry_user = "SELECT * FROM client WHERE c_id_key = '" . $_SESSION['user_id'] . "' && cpassword = '" . $password . "'";
-        $rs_user = $con->recordselect($qry_user);
+        $stmt = mysqli_prepare($con->linki, "SELECT * FROM client WHERE c_id_key = ? AND cpassword = ?");
+        mysqli_stmt_bind_param($stmt, 'is', $_SESSION['user_id'], $password);
+        mysqli_stmt_execute($stmt);
+        $rs_user = mysqli_stmt_get_result($stmt);
         $no_user = mysqli_num_rows($rs_user);
        
         if($no_user <= 0) 
@@ -73,11 +86,14 @@ else if($frm_action == "client_change_password")
             print "<META http-equiv='refresh' content='0;URL=client-change-password.php'>";	
             exit;
         }
-        else 
+        else
         {
-            $new_password =  base64_encode($_POST['new_password']);
-            $qry_update = "update `client` set cpassword='".$new_password."' where c_id_key='" . $_SESSION['user_id'] . "'";
-            $con->update($qry_update);
+            $new_password =  base64_encode(filter_input(INPUT_POST, 'new_password', FILTER_SANITIZE_STRING));
+            $stmt_up = mysqli_prepare($con->linki, "UPDATE `client` SET cpassword=? WHERE c_id_key=?");
+            mysqli_stmt_bind_param($stmt_up, 'si', $new_password, $_SESSION['user_id']);
+            mysqli_stmt_execute($stmt_up);
+            mysqli_stmt_close($stmt_up);
+            mysqli_stmt_close($stmt);
             
             $_SESSION['rep_msg'] =  "Password changed successfully.";
             $redirect_url = "client-settings.php";
@@ -85,13 +101,16 @@ else if($frm_action == "client_change_password")
             exit;
         }
 }
-else if($frm_action == "admin_client_change_password") 
+else if($frm_action == "admin_client_change_password")
 {
-        $password = base64_encode($_POST['current_password']);
+        $password = base64_encode(filter_input(INPUT_POST, 'current_password', FILTER_SANITIZE_STRING));
 
-        $new_password =  base64_encode($_POST['new_password']);
-        $qry_update = "update `client` set cpassword='".$new_password."' where c_id_key='" . $_POST['c_id_key'] . "'";
-        $con->update($qry_update);
+        $new_password =  base64_encode(filter_input(INPUT_POST, 'new_password', FILTER_SANITIZE_STRING));
+        $cid = filter_input(INPUT_POST, 'c_id_key', FILTER_SANITIZE_NUMBER_INT);
+        $stmt_up = mysqli_prepare($con->linki, "UPDATE `client` SET cpassword=? WHERE c_id_key=?");
+        mysqli_stmt_bind_param($stmt_up, 'si', $new_password, $cid);
+        mysqli_stmt_execute($stmt_up);
+        mysqli_stmt_close($stmt_up);
         
         $_SESSION['rep_manage_msg'] =  "Password changed successfully.";
         $redirect_url = "admin-manage-client.php";
@@ -99,13 +118,16 @@ else if($frm_action == "admin_client_change_password")
         exit;
        
 }
-else if($frm_action == "admin_rep_change_password") 
+else if($frm_action == "admin_rep_change_password")
 {
-        $password = base64_encode($_POST['current_password']);
+        $password = base64_encode(filter_input(INPUT_POST, 'current_password', FILTER_SANITIZE_STRING));
 
-        $new_password =  base64_encode($_POST['new_password']);
-        $qry_update = "update `model` set rpassword='".$new_password."' where r_id_key='" . $_POST['r_id_key'] . "'";
-        $con->update($qry_update);
+        $new_password =  base64_encode(filter_input(INPUT_POST, 'new_password', FILTER_SANITIZE_STRING));
+        $rid = filter_input(INPUT_POST, 'r_id_key', FILTER_SANITIZE_NUMBER_INT);
+        $stmt_up = mysqli_prepare($con->linki, "UPDATE `model` SET rpassword=? WHERE r_id_key=?");
+        mysqli_stmt_bind_param($stmt_up, 'si', $new_password, $rid);
+        mysqli_stmt_execute($stmt_up);
+        mysqli_stmt_close($stmt_up);
         
         $_SESSION['rep_manage_msg'] =  "Password changed successfully.";
         $redirect_url = "admin-manage-rep.php";
@@ -113,15 +135,18 @@ else if($frm_action == "admin_rep_change_password")
         exit;
        
 }
-else if($frm_action == "client_login") 
+else if($frm_action == "client_login")
 {
-        $username = $_POST['user'];
-        $password = base64_encode($_POST['password']);
+        $username = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_EMAIL);
+        $password = base64_encode(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING));
 
-        $qry_user = "SELECT * FROM client WHERE cemail = '" . $username . "' && cpassword = '" . $password . "' && cstatus = '1'";
-        $rs_user = $con->recordselect($qry_user);
+        $stmt = mysqli_prepare($con->linki, "SELECT * FROM client WHERE cemail = ? AND cpassword = ? AND cstatus = '1'");
+        mysqli_stmt_bind_param($stmt, 'ss', $username, $password);
+        mysqli_stmt_execute($stmt);
+        $rs_user = mysqli_stmt_get_result($stmt);
         $no_user = mysqli_num_rows($rs_user);
         $row_user = mysqli_fetch_array($rs_user);
+        mysqli_stmt_close($stmt);
        
         if($no_user <= 0) 
         {
@@ -271,50 +296,79 @@ else if($frm_action == "admin_create_db")
     print "<META http-equiv='refresh' content='0;URL=admin.php'>";	
     exit; 
 }
-else if($frm_action == "rep_settings") 
-{ 
+else if($frm_action == "rep_settings")
+{
     if($_POST['name']!="")
     {
-        $qry_up="update `model` set rname='".mysqli_real_escape_string($con->linki,$_POST['name'])."',remail='".mysqli_real_escape_string($con->linki,$_POST['email'])."',rphone='".mysqli_real_escape_string($con->linki,$_POST['phone'])."',raddress='".mysqli_real_escape_string($con->linki,$_POST['message'])."' where r_id_key='".$_SESSION['user_id']."'";
-        $con->update($qry_up);
+        $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_STRING);
+        $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING);
+        $stmt_up = mysqli_prepare($con->linki, "UPDATE `model` SET rname=?, remail=?, rphone=?, raddress=? WHERE r_id_key=?");
+        mysqli_stmt_bind_param($stmt_up, 'ssssi', $name, $email, $phone, $message, $_SESSION['user_id']);
+        mysqli_stmt_execute($stmt_up);
+        mysqli_stmt_close($stmt_up);
         
         $_SESSION['rep_msg']="Settings saved successfully!!!";
         print "<META http-equiv='refresh' content='0;URL=rep-settings.php'>";	
         exit; 
     }
 } 
-else if($frm_action == "client_settings") 
-{ 
+else if($frm_action == "client_settings")
+{
 
     if($_POST['name']!="")
     {
-        $qry_up="update `client` set cname='".mysqli_real_escape_string($con->linki,$_POST['name'])."',cemail='".mysqli_real_escape_string($con->linki,$_POST['email'])."',cphone='".mysqli_real_escape_string($con->linki,$_POST['phone'])."',caddress='".mysqli_real_escape_string($con->linki,$_POST['message'])."' where c_id_key='".$_SESSION['user_id']."'";
-        $con->update($qry_up);
+        $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_STRING);
+        $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING);
+        $stmt_up = mysqli_prepare($con->linki, "UPDATE `client` SET cname=?, cemail=?, cphone=?, caddress=? WHERE c_id_key=?");
+        mysqli_stmt_bind_param($stmt_up, 'ssssi', $name, $email, $phone, $message, $_SESSION['user_id']);
+        mysqli_stmt_execute($stmt_up);
+        mysqli_stmt_close($stmt_up);
         
         $_SESSION['rep_msg']="Settings saved successfully!!!";
         print "<META http-equiv='refresh' content='0;URL=client-settings.php'>";	
         exit; 
     }
 }    
-else if($frm_action == "admin_client_edit") 
-{ 
+else if($frm_action == "admin_client_edit")
+{
     if($_POST['name']!="")
     {
-        $qry_up="update `client` set cstatus='".$_POST['status']."',clevel='".$_POST['level']."', cname='".mysqli_real_escape_string($con->linki,$_POST['name'])."',cemail='".mysqli_real_escape_string($con->linki,$_POST['email'])."',cphone='".mysqli_real_escape_string($con->linki,$_POST['phone'])."',caddress='".mysqli_real_escape_string($con->linki,$_POST['message'])."' where c_id_key='".$_POST['cid']."'";
-        $con->update($qry_up);
+        $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_NUMBER_INT);
+        $level = filter_input(INPUT_POST, 'level', FILTER_SANITIZE_STRING);
+        $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_STRING);
+        $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING);
+        $cid = filter_input(INPUT_POST, 'cid', FILTER_SANITIZE_NUMBER_INT);
+        $stmt_up = mysqli_prepare($con->linki, "UPDATE `client` SET cstatus=?, clevel=?, cname=?, cemail=?, cphone=?, caddress=? WHERE c_id_key=?");
+        mysqli_stmt_bind_param($stmt_up, 'isssssi', $status, $level, $name, $email, $phone, $message, $cid);
+        mysqli_stmt_execute($stmt_up);
+        mysqli_stmt_close($stmt_up);
         
         $_SESSION['rep_manage_msg']="Settings saved successfully!!!";
         print "<META http-equiv='refresh' content='0;URL=admin-manage-client.php'>";	
         exit; 
     }
 }    
-else if($frm_action == "admin_rep_edit") 
-{ 
+else if($frm_action == "admin_rep_edit")
+{
     if($_POST['name']!="")
     {
-        $status = $_POST['status'];
-        $qry_up="update `model` set rstatus=$status,rlevel='".$_POST['level']."', rname='".mysqli_real_escape_string($con->linki,$_POST['name'])."',remail='".mysqli_real_escape_string($con->linki,$_POST['email'])."',rphone='".mysqli_real_escape_string($con->linki,$_POST['phone'])."',raddress='".mysqli_real_escape_string($con->linki,$_POST['message'])."' where r_id_key='".$_POST['r_id_key']."'";
-        $con->update($qry_up);
+        $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_NUMBER_INT);
+        $level = filter_input(INPUT_POST, 'level', FILTER_SANITIZE_STRING);
+        $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_STRING);
+        $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING);
+        $rid_key = filter_input(INPUT_POST, 'r_id_key', FILTER_SANITIZE_NUMBER_INT);
+        $stmt_up = mysqli_prepare($con->linki, "UPDATE `model` SET rstatus=?, rlevel=?, rname=?, remail=?, rphone=?, raddress=? WHERE r_id_key=?");
+        mysqli_stmt_bind_param($stmt_up, 'isssssi', $status, $level, $name, $email, $phone, $message, $rid_key);
+        mysqli_stmt_execute($stmt_up);
+        mysqli_stmt_close($stmt_up);
       
         
         $_SESSION['rep_manage_msg']="Settings saved successfully!!!";
@@ -322,15 +376,23 @@ else if($frm_action == "admin_rep_edit")
         exit; 
     }
 }    
-else if($frm_action == "rep_register") 
-{ 
-  
+else if($frm_action == "rep_register")
+{
+
         if($_POST['name']!="")
         {
-                $rep_rid = $_POST['rep_rid'];
-                
-                $qry_in = "insert into `model`(`rid`,`rname`,`remail`,`rphone`,`raddress`,`rpassword`,`rstatus`,`rcode`)values('".$rep_rid."','".mysqli_real_escape_string($con->linki,$_POST['name'])."','".mysqli_real_escape_string($con->linki,$_POST['email'])."','".mysqli_real_escape_string($con->linki,$_POST['phone'])."','".mysqli_real_escape_string($con->linki,$_POST['message'])."','".mysqli_real_escape_string($con->linki,base64_encode($_POST['password']))."','1','".mysqli_real_escape_string($con->linki,$_POST['user'])."')";
-                $con->insert($qry_in);
+                $rep_rid = filter_input(INPUT_POST, 'rep_rid', FILTER_SANITIZE_NUMBER_INT);
+                $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+                $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+                $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_STRING);
+                $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING);
+                $password = base64_encode(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING));
+                $user = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_STRING);
+
+                $stmt_in = mysqli_prepare($con->linki, "INSERT INTO `model`(`rid`,`rname`,`remail`,`rphone`,`raddress`,`rpassword`,`rstatus`,`rcode`) VALUES (?,?,?,?,?,?,1,?)");
+                mysqli_stmt_bind_param($stmt_in, 'issssss', $rep_rid, $name, $email, $phone, $message, $password, $user);
+                mysqli_stmt_execute($stmt_in);
+                mysqli_stmt_close($stmt_in);
                 
                 $qry_code = "SELECT * FROM valcode WHERE vcode = '" . $_POST['user'] . "' && vstatus = '1'";
                 $rs_code = $con->recordselect($qry_code);
@@ -355,15 +417,22 @@ else if($frm_action == "rep_register")
             
         }
 }
-else if($frm_action == "client_register") 
-{ 
+else if($frm_action == "client_register")
+{
         if($_POST['name']!="")
         {
-                $client_cid = $_POST['client_cid'];
-                
-                
-                $qry_in = "insert into `client`(`cid`,`cname`,`cemail`,`cphone`,`caddress`,`cpassword`,`cstatus`,`ccode`)values('".$client_cid."','".mysqli_real_escape_string($con->linki,$_POST['name'])."','".mysqli_real_escape_string($con->linki,$_POST['email'])."','".mysqli_real_escape_string($con->linki,$_POST['phone'])."','".mysqli_real_escape_string($con->linki,$_POST['message'])."','".mysqli_real_escape_string($con->linki,base64_encode($_POST['password']))."','1','".mysqli_real_escape_string($con->linki,$_POST['user'])."')";
-                $con->insert($qry_in);
+                $client_cid = filter_input(INPUT_POST, 'client_cid', FILTER_SANITIZE_NUMBER_INT);
+                $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+                $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+                $phone = filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_STRING);
+                $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING);
+                $password = base64_encode(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING));
+                $user = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_STRING);
+
+                $stmt_in = mysqli_prepare($con->linki, "INSERT INTO `client`(`cid`,`cname`,`cemail`,`cphone`,`caddress`,`cpassword`,`cstatus`,`ccode`) VALUES (?,?,?,?,?,?,1,?)");
+                mysqli_stmt_bind_param($stmt_in, 'issssss', $client_cid, $name, $email, $phone, $message, $password, $user);
+                mysqli_stmt_execute($stmt_in);
+                mysqli_stmt_close($stmt_in);
                 
                 $qry_code = "SELECT * FROM valcode WHERE vcode = '" . $_POST['user'] . "' && vstatus = '1'";
                 $rs_code = $con->recordselect($qry_code);

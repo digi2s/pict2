@@ -1,15 +1,19 @@
 <?php session_start();
 include "includes/config.php";
 
-if($_SESSION['admin']=='' or $_SESSION['admin']!="yes" or $_GET['cid']=="") 
- {
-    print "<META http-equiv='refresh' content='0;URL=admin-login.php'>";	
+if($_SESSION['admin']=='' or $_SESSION['admin']!="yes" or !isset($_GET['cid']))
+{
+    print "<META http-equiv='refresh' content='0;URL=admin-login.php'>";
     exit;
- }
+}
 
-$qry = "select * from client where c_id_key='".$_GET['cid']."'";
-$rs= $con->recordselect($qry);
-$row=mysqli_fetch_array($rs); 
+$cid = filter_input(INPUT_GET, 'cid', FILTER_SANITIZE_NUMBER_INT);
+$stmt = mysqli_prepare($con->linki, "select * from client where c_id_key=?");
+mysqli_stmt_bind_param($stmt, 'i', $cid);
+mysqli_stmt_execute($stmt);
+$rs = mysqli_stmt_get_result($stmt);
+$row = mysqli_fetch_array($rs);
+mysqli_stmt_close($stmt);
 
 $level = $row['clevel'];
 $cstatus = '';

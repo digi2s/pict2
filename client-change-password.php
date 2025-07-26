@@ -7,9 +7,12 @@ if($_SESSION['user_id']=='' or $_SESSION['user_type_r']!="client")
     exit;
  }
 
-$qry = "select * from client where c_id_key='".$_SESSION['user_id']."'";
-$rs= $con->recordselect($qry);
-$row=mysqli_fetch_array($rs); 
+$stmt = mysqli_prepare($con->linki, "select * from client where c_id_key=?");
+mysqli_stmt_bind_param($stmt, 'i', $_SESSION['user_id']);
+mysqli_stmt_execute($stmt);
+$rs = mysqli_stmt_get_result($stmt);
+$row = mysqli_fetch_array($rs);
+mysqli_stmt_close($stmt);
 ?> 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

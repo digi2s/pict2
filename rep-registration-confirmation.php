@@ -1,6 +1,8 @@
 <?php session_start();
 include "includes/config.php";
 
+$hashedPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
 $pos = strpos($_POST['user'], 'R');
 if($pos === false) {
     $_SESSION['rep_reg_msg'] =  "Rep Reg CODE not valid, please try again.";
@@ -81,7 +83,7 @@ $rep_rid = "R510000001";
         <input type="hidden" name="user" value="<?=$_POST['user'];?>" />
         <input type="hidden" name="name" value="<?=$_POST['name'];?>" />
         <input type="hidden" name="email" value="<?=$_POST['email'];?>" />
-        <input type="hidden" name="password" value="<?=$_POST['password'];?>" />
+        <input type="hidden" name="password" value="<?=$hashedPassword;?>" />
         <input type="hidden" name="phone" value="<?=$_POST['phone'];?>" />
         <input type="hidden" name="message" value="<?=$_POST['message'];?>" />
         <input type="hidden" name="rep_rid" value="<?=$rep_rid;?>" />

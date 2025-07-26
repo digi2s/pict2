@@ -3,18 +3,18 @@ include "includes/config.php";
 
 $frm_action=$_REQUEST['frm_action'];
 
-if($frm_action == "rep_login") 
+if($frm_action == "rep_login")
 {
         $username = $_POST['user'];
-        $password = base64_encode($_POST['password']);
+        $password = $_POST['password'];
 
-        $qry_user = "SELECT * FROM model WHERE remail = '" . $username . "' && rpassword = '" . $password . "' && rstatus = '1'";
+        $qry_user = "SELECT * FROM model WHERE remail = '" . mysqli_real_escape_string($con->linki,$username) . "' && rstatus = '1'";
 
         $rs_user = $con->recordselect($qry_user);
         $no_user = mysqli_num_rows($rs_user);
         $row_user = mysqli_fetch_array($rs_user);
-       
-        if($no_user <= 0) 
+
+        if($no_user <= 0 || !password_verify($password, $row_user['rpassword']))
         {
             $_SESSION['rep_login_msg'] =  "User / Password not valid, please try again.";
             print "<META http-equiv='refresh' content='0;URL=rep-login.php'>";	
@@ -35,22 +35,22 @@ if($frm_action == "rep_login")
 }
 else if($frm_action == "rep_change_password") 
 {
-        $password = base64_encode($_POST['current_password']);
+        $password = $_POST['current_password'];
 
-        $qry_user = "SELECT * FROM model WHERE r_id_key = '" . $_SESSION['user_id'] . "' && rpassword = '" . $password . "'";
+        $qry_user = "SELECT * FROM model WHERE r_id_key = '" . $_SESSION['user_id'] . "'";
         $rs_user = $con->recordselect($qry_user);
-        $no_user = mysqli_num_rows($rs_user);
-       
-        if($no_user <= 0) 
+        $row_user = mysqli_fetch_array($rs_user);
+
+        if(!$row_user || !password_verify($password, $row_user['rpassword']))
         {
             $_SESSION['rep_msg'] =  "Sorry you entered wrong current password.";
-            print "<META http-equiv='refresh' content='0;URL=rep-change-password.php'>";	
+            print "<META http-equiv='refresh' content='0;URL=rep-change-password.php'>";
             exit;
         }
-        else 
+        else
         {
-            $new_password =  base64_encode($_POST['new_password']);
-            $qry_update = "update `model` set rpassword='".$new_password."' where r_id_key='" . $_SESSION['user_id'] . "'";
+            $new_password =  password_hash($_POST['new_password'], PASSWORD_DEFAULT);
+            $qry_update = "update `model` set rpassword='".mysqli_real_escape_string($con->linki,$new_password)."' where r_id_key='" . $_SESSION['user_id'] . "'";
             $con->update($qry_update);
             
             $_SESSION['rep_msg'] =  "Password changed successfully.";
@@ -61,22 +61,22 @@ else if($frm_action == "rep_change_password")
 }
 else if($frm_action == "client_change_password") 
 {
-        $password = base64_encode($_POST['current_password']);
+        $password = $_POST['current_password'];
 
-        $qry_user = "SELECT * FROM client WHERE c_id_key = '" . $_SESSION['user_id'] . "' && cpassword = '" . $password . "'";
+        $qry_user = "SELECT * FROM client WHERE c_id_key = '" . $_SESSION['user_id'] . "'";
         $rs_user = $con->recordselect($qry_user);
-        $no_user = mysqli_num_rows($rs_user);
-       
-        if($no_user <= 0) 
+        $row_user = mysqli_fetch_array($rs_user);
+
+        if(!$row_user || !password_verify($password, $row_user['cpassword']))
         {
             $_SESSION['rep_msg'] =  "Sorry you entered wrong current password.";
-            print "<META http-equiv='refresh' content='0;URL=client-change-password.php'>";	
+            print "<META http-equiv='refresh' content='0;URL=client-change-password.php'>";
             exit;
         }
-        else 
+        else
         {
-            $new_password =  base64_encode($_POST['new_password']);
-            $qry_update = "update `client` set cpassword='".$new_password."' where c_id_key='" . $_SESSION['user_id'] . "'";
+            $new_password =  password_hash($_POST['new_password'], PASSWORD_DEFAULT);
+            $qry_update = "update `client` set cpassword='".mysqli_real_escape_string($con->linki,$new_password)."' where c_id_key='" . $_SESSION['user_id'] . "'";
             $con->update($qry_update);
             
             $_SESSION['rep_msg'] =  "Password changed successfully.";
@@ -87,10 +87,10 @@ else if($frm_action == "client_change_password")
 }
 else if($frm_action == "admin_client_change_password") 
 {
-        $password = base64_encode($_POST['current_password']);
+        $password = $_POST['current_password'];
 
-        $new_password =  base64_encode($_POST['new_password']);
-        $qry_update = "update `client` set cpassword='".$new_password."' where c_id_key='" . $_POST['c_id_key'] . "'";
+        $new_password =  password_hash($_POST['new_password'], PASSWORD_DEFAULT);
+        $qry_update = "update `client` set cpassword='".mysqli_real_escape_string($con->linki,$new_password)."' where c_id_key='" . $_POST['c_id_key'] . "'";
         $con->update($qry_update);
         
         $_SESSION['rep_manage_msg'] =  "Password changed successfully.";
@@ -101,10 +101,10 @@ else if($frm_action == "admin_client_change_password")
 }
 else if($frm_action == "admin_rep_change_password") 
 {
-        $password = base64_encode($_POST['current_password']);
+        $password = $_POST['current_password'];
 
-        $new_password =  base64_encode($_POST['new_password']);
-        $qry_update = "update `model` set rpassword='".$new_password."' where r_id_key='" . $_POST['r_id_key'] . "'";
+        $new_password =  password_hash($_POST['new_password'], PASSWORD_DEFAULT);
+        $qry_update = "update `model` set rpassword='".mysqli_real_escape_string($con->linki,$new_password)."' where r_id_key='" . $_POST['r_id_key'] . "'";
         $con->update($qry_update);
         
         $_SESSION['rep_manage_msg'] =  "Password changed successfully.";
@@ -116,14 +116,14 @@ else if($frm_action == "admin_rep_change_password")
 else if($frm_action == "client_login") 
 {
         $username = $_POST['user'];
-        $password = base64_encode($_POST['password']);
+        $password = $_POST['password'];
 
-        $qry_user = "SELECT * FROM client WHERE cemail = '" . $username . "' && cpassword = '" . $password . "' && cstatus = '1'";
+        $qry_user = "SELECT * FROM client WHERE cemail = '" . mysqli_real_escape_string($con->linki,$username) . "' && cstatus = '1'";
         $rs_user = $con->recordselect($qry_user);
         $no_user = mysqli_num_rows($rs_user);
         $row_user = mysqli_fetch_array($rs_user);
-       
-        if($no_user <= 0) 
+
+        if($no_user <= 0 || !password_verify($password, $row_user['cpassword']))
         {
             $_SESSION['client_login_msg'] =  "User / Password not valid, please try again.";
             print "<META http-equiv='refresh' content='0;URL=client-login.php'>";	
@@ -329,7 +329,11 @@ else if($frm_action == "rep_register")
         {
                 $rep_rid = $_POST['rep_rid'];
                 
-                $qry_in = "insert into `model`(`rid`,`rname`,`remail`,`rphone`,`raddress`,`rpassword`,`rstatus`,`rcode`)values('".$rep_rid."','".mysqli_real_escape_string($con->linki,$_POST['name'])."','".mysqli_real_escape_string($con->linki,$_POST['email'])."','".mysqli_real_escape_string($con->linki,$_POST['phone'])."','".mysqli_real_escape_string($con->linki,$_POST['message'])."','".mysqli_real_escape_string($con->linki,base64_encode($_POST['password']))."','1','".mysqli_real_escape_string($con->linki,$_POST['user'])."')";
+                $password = $_POST['password'];
+                if(strpos($password,'$2y$')!==0 && strpos($password,'$argon2')!==0){
+                    $password = password_hash($password, PASSWORD_DEFAULT);
+                }
+                $qry_in = "insert into `model`(`rid`,`rname`,`remail`,`rphone`,`raddress`,`rpassword`,`rstatus`,`rcode`)values('".$rep_rid."','".mysqli_real_escape_string($con->linki,$_POST['name'])."','".mysqli_real_escape_string($con->linki,$_POST['email'])."','".mysqli_real_escape_string($con->linki,$_POST['phone'])."','".mysqli_real_escape_string($con->linki,$_POST['message'])."','".mysqli_real_escape_string($con->linki,$password)."','1','".mysqli_real_escape_string($con->linki,$_POST['user'])."')";
                 $con->insert($qry_in);
                 
                 $qry_code = "SELECT * FROM valcode WHERE vcode = '" . $_POST['user'] . "' && vstatus = '1'";
@@ -362,7 +366,11 @@ else if($frm_action == "client_register")
                 $client_cid = $_POST['client_cid'];
                 
                 
-                $qry_in = "insert into `client`(`cid`,`cname`,`cemail`,`cphone`,`caddress`,`cpassword`,`cstatus`,`ccode`)values('".$client_cid."','".mysqli_real_escape_string($con->linki,$_POST['name'])."','".mysqli_real_escape_string($con->linki,$_POST['email'])."','".mysqli_real_escape_string($con->linki,$_POST['phone'])."','".mysqli_real_escape_string($con->linki,$_POST['message'])."','".mysqli_real_escape_string($con->linki,base64_encode($_POST['password']))."','1','".mysqli_real_escape_string($con->linki,$_POST['user'])."')";
+                $password = $_POST['password'];
+                if(strpos($password,'$2y$')!==0 && strpos($password,'$argon2')!==0){
+                    $password = password_hash($password, PASSWORD_DEFAULT);
+                }
+                $qry_in = "insert into `client`(`cid`,`cname`,`cemail`,`cphone`,`caddress`,`cpassword`,`cstatus`,`ccode`)values('".$client_cid."','".mysqli_real_escape_string($con->linki,$_POST['name'])."','".mysqli_real_escape_string($con->linki,$_POST['email'])."','".mysqli_real_escape_string($con->linki,$_POST['phone'])."','".mysqli_real_escape_string($con->linki,$_POST['message'])."','".mysqli_real_escape_string($con->linki,$password)."','1','".mysqli_real_escape_string($con->linki,$_POST['user'])."')";
                 $con->insert($qry_in);
                 
                 $qry_code = "SELECT * FROM valcode WHERE vcode = '" . $_POST['user'] . "' && vstatus = '1'";

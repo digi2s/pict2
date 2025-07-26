@@ -41,14 +41,14 @@ else
         <div id="header-wrapper">
             <header id="header" class="container">
             	<h1>Client Settings</h1>
-                <h4>ID: <?=$_SESSION['cid'];?> - <?=$_SESSION['user_email'];?></h4>
+                <h4>ID: <?=htmlspecialchars($_SESSION['cid'], ENT_QUOTES, 'UTF-8');?> - <?=htmlspecialchars($_SESSION['user_email'], ENT_QUOTES, 'UTF-8');?></h4>
             </header>
         </div>
         <div id="main-wrapper">
             <div class="container">
             <div class="col-lg-12">
                     <div class="totle_pic_div">
-                    	Level <span class="pic_box"><?=$level;?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status <span class="pic_box"><?=$cstatus;?></span>
+                        Level <span class="pic_box"><?=htmlspecialchars($level, ENT_QUOTES, 'UTF-8');?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status <span class="pic_box"><?=htmlspecialchars($cstatus, ENT_QUOTES, 'UTF-8');?></span>
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -56,31 +56,31 @@ else
                         <form action="action.php" method="post" name="frm_contact" id="frm_contact" onsubmit="return check_contact()">
                          <?php if($_SESSION['rep_msg']!="")
                     {?>
-                       <div class="col-sm-12"> <div class="msg_div"><?=$_SESSION['rep_msg'];?></div></div>
+                       <div class="col-sm-12"> <div class="msg_div"><?=htmlspecialchars($_SESSION['rep_msg'], ENT_QUOTES, 'UTF-8');?></div></div>
                     <? $_SESSION['rep_msg']=''; } ?>
                         <input type="hidden" name="frm_action" value="client_settings" />
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label for="fullname">Name</label>
-                                <input value="<?=$row['cname'];?>" id="name" name="name" type="text" class="form-control">
+                                  <input value="<?=htmlspecialchars($row['cname'], ENT_QUOTES, 'UTF-8');?>" id="name" name="name" type="text" class="form-control">
                               </div>
                             </div>
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label for="fullname">Email</label>
-                                <input value="<?=$row['cemail'];?>" id="email" name="email" type="email" class="form-control">
+                                  <input value="<?=htmlspecialchars($row['cemail'], ENT_QUOTES, 'UTF-8');?>" id="email" name="email" type="email" class="form-control">
                               </div>
                             </div>
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label for="fullname">Phone</label>
-                                <input value="<?=$row['cphone'];?>" id="phone" name="phone" type="text" class="form-control">
+                                  <input value="<?=htmlspecialchars($row['cphone'], ENT_QUOTES, 'UTF-8');?>" id="phone" name="phone" type="text" class="form-control">
                               </div>
                             </div>
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label for="message">Address</label>
-                                <textarea id="message" name="message" class="form-control"><?=$row['caddress'];?></textarea>
+                                  <textarea id="message" name="message" class="form-control"><?=htmlspecialchars($row['caddress'], ENT_QUOTES, 'UTF-8');?></textarea>
                               </div>
                             </div>
                             <div class="col-sm-12">

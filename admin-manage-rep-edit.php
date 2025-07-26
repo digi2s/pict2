@@ -47,7 +47,7 @@ else
         <div id="main-wrapper">
         <form action="action.php" method="post" name="frm_contact" id="frm_contact">
         <input type="hidden" name="frm_action" value="admin_rep_edit" />
-         <input type="hidden" name="r_id_key" value="<?=$_GET['rid'];?>" />
+         <input type="hidden" name="r_id_key" value="<?=htmlspecialchars($_GET['rid'], ENT_QUOTES, 'UTF-8');?>" />
             <div class="container">
             <div class="col-lg-12">
                     <div class="totle_pic_div">
@@ -79,30 +79,30 @@ else
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label for="fullname">Name</label>
-                                <input value="<?=$row['rname'];?>" id="name" name="name" type="text" class="form-control">
+                                <input value="<?=htmlspecialchars($row['rname'], ENT_QUOTES, 'UTF-8');?>" id="name" name="name" type="text" class="form-control">
                               </div>
                             </div>
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label for="fullname">Email</label>
-                                <input value="<?=$row['remail'];?>" id="email" name="email" type="email" class="form-control">
+                                <input value="<?=htmlspecialchars($row['remail'], ENT_QUOTES, 'UTF-8');?>" id="email" name="email" type="email" class="form-control">
                               </div>
                             </div>
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label for="fullname">Phone</label>
-                                <input value="<?=$row['rphone'];?>" id="phone" name="phone" type="text" class="form-control">
+                                <input value="<?=htmlspecialchars($row['rphone'], ENT_QUOTES, 'UTF-8');?>" id="phone" name="phone" type="text" class="form-control">
                               </div>
                             </div>
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label for="message">Address</label>
-                                <textarea id="message" name="message" class="form-control"><?=$row['raddress'];?></textarea>
+                                <textarea id="message" name="message" class="form-control"><?=htmlspecialchars($row['raddress'], ENT_QUOTES, 'UTF-8');?></textarea>
                               </div>
                             </div>
                             <div class="col-sm-12">
                             	<div class="form-group-bt">
-                                    <a href="admin-rep-change-password.php?rid=<?=$_GET['rid'];?>" class="btn-primary">Change Password</a>
+                                    <a href="admin-rep-change-password.php?rid=<?=htmlspecialchars($_GET['rid'], ENT_QUOTES, 'UTF-8');?>" class="btn-primary">Change Password</a>
                               		<button type="submit" class="btn-primary" onclick="return checkform();">Save</button>
                                     <a href="admin-manage-rep.php" class="btn-primary">Back</a>
                                 </div>

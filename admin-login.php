@@ -26,7 +26,7 @@ include "includes/config.php";
                 	<div class="contact_form_div">
                     <?php if($_SESSION['client_login_msg']!="")
                     {?>
-                       <div class="col-sm-12"><div class="msg_div"><?php echo $_SESSION['client_login_msg'];?></div></div>
+                       <div class="col-sm-12"><div class="msg_div"><?=htmlspecialchars($_SESSION['client_login_msg'], ENT_QUOTES, 'UTF-8');?></div></div>
                     <?php $_SESSION['client_login_msg']=''; } ?>
                         <form action="action.php" method="post" name="frm_rep_login" id="frm_rep_login">
                             <input type="hidden" name="frm_action" value="admin_login" /> 

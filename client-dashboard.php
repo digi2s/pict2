@@ -25,7 +25,7 @@ if($_SESSION['user_id']=='' or $_SESSION['user_type_r']!="client")
         <div id="header-wrapper">
             <header id="header" class="container">
             	<h1>Client - Dashboard</h1>
-                <h4>ID: <?=$_SESSION['cid'];?> - <?=$_SESSION['user_email'];?></h4>
+                <h4>ID: <?=htmlspecialchars($_SESSION['cid'], ENT_QUOTES, 'UTF-8');?> - <?=htmlspecialchars($_SESSION['user_email'], ENT_QUOTES, 'UTF-8');?></h4>
             </header>
         </div>
         <div id="main-wrapper">

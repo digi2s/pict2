@@ -29,9 +29,9 @@ include "includes/config.php";
                 	<div class="contact_form_div">
                         <form action="action.php" method="post" name="admin_db_create" id="admin_db_create" enctype="multipart/form-data">
                         <input type="hidden" name="frm_action" value="admin_create_db" /> 
-                        <?php if($_SESSION['admin_db_msg']!="")
+                          <?php if($_SESSION['admin_db_msg']!="")
                     {?>
-                       <div class="col-sm-12"> <div class="msg_div"><?=$_SESSION['admin_db_msg'];?></div></div>
+                       <div class="col-sm-12"> <div class="msg_div"><?=htmlspecialchars($_SESSION['admin_db_msg'], ENT_QUOTES, 'UTF-8');?></div></div>
                     <? $_SESSION['admin_db_msg']=''; } ?>
                       <?php /*    
                             <div class="col-sm-12">

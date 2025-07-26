@@ -28,7 +28,7 @@ include "includes/config.php";
                         <input type="hidden" name="frm_action" value="rep_register" /> 
                         <?php if($_SESSION['rep_reg_msg']!="")
                     {?>
-                       <div class="col-sm-12"><div class="msg_div"><?=$_SESSION['rep_reg_msg'];?></div></div>
+                       <div class="col-sm-12"><div class="msg_div"><?=htmlspecialchars($_SESSION['rep_reg_msg'], ENT_QUOTES, 'UTF-8');?></div></div>
                     <? $_SESSION['rep_reg_msg']=''; } ?>
                            <div class="col-sm-12">
                               <div class="form-group">

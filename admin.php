@@ -31,7 +31,7 @@ if($_SESSION['admin']=='' or $_SESSION['admin']!="yes")
             <div class="container">
             <?php if($_SESSION['admin_db_msg']!="")
                     {?>
-                       <div class="col-sm-12"> <div class="msg_div"><?=$_SESSION['admin_db_msg'];?></div></div>
+                       <div class="col-sm-12"> <div class="msg_div"><?=htmlspecialchars($_SESSION['admin_db_msg'], ENT_QUOTES, 'UTF-8');?></div></div>
                     <? $_SESSION['admin_db_msg']=''; } ?>
                 <div class="col-lg-12">
                 

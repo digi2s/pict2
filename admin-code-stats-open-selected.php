@@ -48,12 +48,12 @@ if($_SESSION['admin']=='' or $_SESSION['admin']!="yes")
             <div class="container">
                 <div class="col-lg-12">
                     <div class="totle_pic_div">
-                    	ID: <?=$row_rep['rid'];?> - <?=$row_rep['remail'];?>
+                          ID: <?=htmlspecialchars($row_rep['rid'], ENT_QUOTES, 'UTF-8');?> - <?=htmlspecialchars($row_rep['remail'], ENT_QUOTES, 'UTF-8');?>
                     </div>
                 </div>
                 <?php if($_SESSION['rep_manage_msg']!="")
                     {?>
-                       <div class="col-sm-12"> <div class="msg_div_rep_manage"><?=$_SESSION['rep_manage_msg'];?></div></div>
+                       <div class="col-sm-12"> <div class="msg_div_rep_manage"><?=htmlspecialchars($_SESSION['rep_manage_msg'], ENT_QUOTES, 'UTF-8');?></div></div>
                     <? $_SESSION['rep_manage_msg']=''; } ?>
                 <div class="col-lg-12">
                 
@@ -85,18 +85,18 @@ if($_SESSION['admin']=='' or $_SESSION['admin']!="yes")
                     ?>
                         <div class="row">
                             <div class="column middle">
-                        	<?=$row_codes['vcode'];?>
+                                  <?=htmlspecialchars($row_codes['vcode'], ENT_QUOTES, 'UTF-8');?>
                             </div>
                             
                             <div class="column middle">
-                            <?=$row_codes['vtimes'];?>
+                              <?=htmlspecialchars($row_codes['vtimes'], ENT_QUOTES, 'UTF-8');?>
                             
                             </div>
                             <div class="column middle">
-                            <?=$row_codes['vtype'];?>
+                              <?=htmlspecialchars($row_codes['vtype'], ENT_QUOTES, 'UTF-8');?>
                             </div>
                             <div class="column middle">
-                                <?php if($row_codes['vtimes']=='0'){?><a href="javascript:void(0);" onclick="Unassingned(<?=$row_codes['vcid'];?>);">Unassingned</a> <? } ?>
+                                  <?php if($row_codes['vtimes']=='0'){?><a href="javascript:void(0);" onclick="Unassingned(<?=htmlspecialchars($row_codes['vcid'], ENT_QUOTES, 'UTF-8');?>);">Unassingned</a> <? } ?>
                             </div>
                         </div>
                         <?  } ?>
@@ -112,7 +112,7 @@ if($_SESSION['admin']=='' or $_SESSION['admin']!="yes")
         </div>
     </div>
     <form action="" method="get" name="frm_operation">
-        <input type="hidden" name="cid" id="cid" value="<?=$_GET['cid'];?>" /> 
+        <input type="hidden" name="cid" id="cid" value="<?=htmlspecialchars($_GET['cid'], ENT_QUOTES, 'UTF-8');?>" />
         <input type="hidden" name="vcid" id="vcid" value="" /> 
         
     </form>

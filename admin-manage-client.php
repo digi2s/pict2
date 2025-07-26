@@ -38,12 +38,12 @@ if($_SESSION['admin']=='' or $_SESSION['admin']!="yes")
             <div class="container">
                 <div class="col-lg-12">
                     <div class="totle_pic_div">
-                    	Total Clients <span class="pic_box"><?=$no_pics_total;?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<form action="" method="get">Search Clients: <input value="<?=$_GET['src'];?>" placeholder="Search by Name,Email,Address" size="50" type="text" class="form-control" name="src" /> <input type="submit" value="Search" /></form>
+                        Total Clients <span class="pic_box"><?=htmlspecialchars($no_pics_total, ENT_QUOTES, 'UTF-8');?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<form action="" method="get">Search Clients: <input value="<?=htmlspecialchars($_GET['src'] ?? '', ENT_QUOTES, 'UTF-8');?>" placeholder="Search by Name,Email,Address" size="50" type="text" class="form-control" name="src" /> <input type="submit" value="Search" /></form>
                     </div>
                 </div>
                 <?php if($_SESSION['rep_manage_msg']!="")
                     {?>
-                       <div class="col-sm-12"> <div class="msg_div_rep_manage"><?=$_SESSION['rep_manage_msg'];?></div></div>
+                       <div class="col-sm-12"> <div class="msg_div_rep_manage"><?=htmlspecialchars($_SESSION['rep_manage_msg'], ENT_QUOTES, 'UTF-8');?></div></div>
                     <? $_SESSION['rep_manage_msg']=''; } ?>
                 <div class="col-lg-12">
                 	<div class="col-lg-3">
@@ -95,15 +95,15 @@ if($_SESSION['admin']=='' or $_SESSION['admin']!="yes")
                     ?>
                         <div class="row">
                             <div class="column first">
-                        	<input name="checked_ids[]" type="checkbox" value="<?=$row_pics['c_id_key'];?>" />
+                                  <input name="checked_ids[]" type="checkbox" value="<?=htmlspecialchars($row_pics['c_id_key'], ENT_QUOTES, 'UTF-8');?>" />
                         </div>
                             <div class="column middle">
                             <?
-                           echo $row_pics['cid'];
+                             echo htmlspecialchars($row_pics['cid'], ENT_QUOTES, 'UTF-8');
                             ?>
                             </div>
                             <div class="column left">
-                            <a href="admin-manage-client-edit.php?cid=<?=$row_pics['c_id_key'];?>" target="_blank"><?=$row_pics['cname'];?></a>
+                              <a href="admin-manage-client-edit.php?cid=<?=htmlspecialchars($row_pics['c_id_key'], ENT_QUOTES, 'UTF-8');?>" target="_blank"><?=htmlspecialchars($row_pics['cname'], ENT_QUOTES, 'UTF-8');?></a>
                             
                             </div>
                             <div class="column right">

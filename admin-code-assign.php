@@ -63,7 +63,7 @@ else
                                     while($row=mysqli_fetch_array($rs))
                                     {   
                                 ?>
-                                    <option value="<?=$row['vcid'];?>"><?=$row['vcode'];?></option>
+                                    <option value="<?=htmlspecialchars($row['vcid'], ENT_QUOTES, 'UTF-8');?>"><?=htmlspecialchars($row['vcode'], ENT_QUOTES, 'UTF-8');?></option>
                                    <? } ?>
                                 </select>
                               </div>
@@ -78,7 +78,7 @@ else
                                     while($row=mysqli_fetch_array($rs))
                                     {   
                                 ?>
-                                    <option value="<?=$row['rid'];?>"><?=$row['rname'];?> - <?=$row['rid'];?></option>
+                                    <option value="<?=htmlspecialchars($row['rid'], ENT_QUOTES, 'UTF-8');?>"><?=htmlspecialchars($row['rname'], ENT_QUOTES, 'UTF-8');?> - <?=htmlspecialchars($row['rid'], ENT_QUOTES, 'UTF-8');?></option>
                                    <? } ?>
                                 </select>
                               </div>

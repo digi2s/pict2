@@ -38,7 +38,7 @@ $row=mysqli_fetch_array($rs);
             <div class="container">
             <div class="col-lg-12">
                     <div class="totle_pic_div">
-                    ID: <?=$row['rid'];?>
+                    ID: <?=htmlspecialchars($row['rid'], ENT_QUOTES, 'UTF-8');?>
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -47,14 +47,14 @@ $row=mysqli_fetch_array($rs);
                             <form action="action.php" method="post" name="frm_contact" id="frm_contact" onsubmit="return check_contact();">
                          <?php if($_SESSION['rep_msg']!="")
                     {?>
-                       <div class="col-sm-12"> <div class="msg_div"><?=$_SESSION['rep_msg'];?></div></div>
+                       <div class="col-sm-12"> <div class="msg_div"><?=htmlspecialchars($_SESSION['rep_msg'], ENT_QUOTES, 'UTF-8');?></div></div>
                     <? $_SESSION['rep_msg']=''; } ?>
                         <input type="hidden" name="frm_action" value="admin_rep_change_password" />
-                        <input type="hidden" name="r_id_key" value="<?=$_GET['rid'];?>" />
+                        <input type="hidden" name="r_id_key" value="<?=htmlspecialchars($_GET['rid'], ENT_QUOTES, 'UTF-8');?>" />
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label for="fullname">Current Password</label>
-                                <input data-validation="required" value="<?=base64_decode($row['rpassword']);?>" id="current_password" name="current_password" type="text" class="form-control">
+                                <input data-validation="required" value="<?=htmlspecialchars(base64_decode($row['rpassword']), ENT_QUOTES, 'UTF-8');?>" id="current_password" name="current_password" type="text" class="form-control">
                               </div>
                             </div>
                             <div class="col-sm-12">

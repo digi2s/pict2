@@ -41,7 +41,7 @@ $qry_code = "SELECT * FROM valcode where vcid = '".$_GET['cid']."'";
             <div class="container">
             <div class="col-lg-12">
                     <div class="totle_pic_div">
-                    ID: <?=$row_rep['rid'];?> - <?=$row_rep['remail'];?>
+                    ID: <?=htmlspecialchars($row_rep['rid'], ENT_QUOTES, 'UTF-8');?> - <?=htmlspecialchars($row_rep['remail'], ENT_QUOTES, 'UTF-8');?>
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -50,25 +50,25 @@ $qry_code = "SELECT * FROM valcode where vcid = '".$_GET['cid']."'";
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label for="fullname">Name:</label>
-                                <?=$row_rep['rname'];?>
+                                  <?=htmlspecialchars($row_rep['rname'], ENT_QUOTES, 'UTF-8');?>
                               </div>
                             </div>
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label for="fullname">Email</label>
-                                <?=$row_rep['remail'];?>
+                                  <?=htmlspecialchars($row_rep['remail'], ENT_QUOTES, 'UTF-8');?>
                               </div>
                             </div>
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label for="fullname">Phone</label>
-                                <?=$row_rep['rphone'];?>
+                                  <?=htmlspecialchars($row_rep['rphone'], ENT_QUOTES, 'UTF-8');?>
                               </div>
                             </div>
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label for="message">Address</label>
-                                <?=$row_rep['raddress'];?>
+                                  <?=htmlspecialchars($row_rep['raddress'], ENT_QUOTES, 'UTF-8');?>
                               </div>
                             </div>
                             <div class="col-sm-12">

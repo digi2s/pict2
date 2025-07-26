@@ -75,13 +75,13 @@ $client_cid = "C510000001";
         <form action="action.php" method="post" name="frm_contact" id="frm_contact">
         <input type="hidden" name="frm_action" value="client_register" />
          
-        <input type="hidden" name="user" value="<?=$_POST['user'];?>" />
-        <input type="hidden" name="name" value="<?=$_POST['name'];?>" />
-        <input type="hidden" name="email" value="<?=$_POST['email'];?>" />
-        <input type="hidden" name="password" value="<?=$_POST['password'];?>" />
-        <input type="hidden" name="phone" value="<?=$_POST['phone'];?>" />
-        <input type="hidden" name="message" value="<?=$_POST['message'];?>" />
-        <input type="hidden" name="client_cid" value="<?=$client_cid;?>" />
+        <input type="hidden" name="user" value="<?=htmlspecialchars($_POST['user'], ENT_QUOTES, 'UTF-8');?>" />
+        <input type="hidden" name="name" value="<?=htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8');?>" />
+        <input type="hidden" name="email" value="<?=htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');?>" />
+        <input type="hidden" name="password" value="<?=htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8');?>" />
+        <input type="hidden" name="phone" value="<?=htmlspecialchars($_POST['phone'], ENT_QUOTES, 'UTF-8');?>" />
+        <input type="hidden" name="message" value="<?=htmlspecialchars($_POST['message'], ENT_QUOTES, 'UTF-8');?>" />
+        <input type="hidden" name="client_cid" value="<?=htmlspecialchars($client_cid, ENT_QUOTES, 'UTF-8');?>" />
         
         <div id="main-wrapper">
             <div class="container">
@@ -90,13 +90,13 @@ $client_cid = "C510000001";
                     <span class="conf_tit_text">Name</span>
                     </div>
                     <div class="col-lg-6">
-                    <span class="conf_dis_text"><?=$_POST['name'];?></span>
+                    <span class="conf_dis_text"><?=htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8');?></span>
                     </div>
                     <div class="col-lg-6">
                     <span class="conf_tit_text">Email</span>
                     </div>
                     <div class="col-lg-6">
-                    <span class="conf_dis_text"><?=$_POST['email'];?></span>
+                    <span class="conf_dis_text"><?=htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');?></span>
                     </div>
                     <div class="col-lg-6">
                     <span class="conf_tit_text">Password</span>
@@ -108,19 +108,19 @@ $client_cid = "C510000001";
                     <span class="conf_tit_text">Phone</span>
                     </div>
                     <div class="col-lg-6">
-                    <span class="conf_dis_text"><?=$_POST['phone'];?></span>
+                    <span class="conf_dis_text"><?=htmlspecialchars($_POST['phone'], ENT_QUOTES, 'UTF-8');?></span>
                     </div>
                     <div class="col-lg-6">
                     <span class="conf_tit_text">Address</span>
                     </div>
                     <div class="col-lg-6">
-                    <span class="conf_dis_text"><?=$_POST['message'];?></span>
+                    <span class="conf_dis_text"><?=htmlspecialchars($_POST['message'], ENT_QUOTES, 'UTF-8');?></span>
                     </div>
                     <div class="col-lg-6">
                     <span class="conf_tit_text">Client ID</span>
                     </div>
                     <div class="col-lg-6">
-                    <span class="conf_dis_text"><?=$client_cid;?></span>
+                    <span class="conf_dis_text"><?=htmlspecialchars($client_cid, ENT_QUOTES, 'UTF-8');?></span>
                     </div>
                 </div>
                 <div class="col-lg-12">

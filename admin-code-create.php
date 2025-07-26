@@ -47,7 +47,7 @@ else
         <div id="main-wrapper">
         <form action="action.php" method="post" name="frm_contact" id="frm_contact">
         <input type="hidden" name="frm_action" value="admin_code_create" />
-         <input type="hidden" name="cid" value="<?=$_GET['cid'];?>" />
+         <input type="hidden" name="cid" value="<?=htmlspecialchars($_GET['cid'], ENT_QUOTES, 'UTF-8');?>" />
             <div class="container">
             
                 <div class="col-lg-12">
@@ -71,7 +71,7 @@ else
                                     <option value="0">Infinite</option>
                                     <?php for($i=1;$i<100;$i++)
                                     {?>
-                                    <option value="<?=$i;?>"><?=$i;?></option>
+                                    <option value="<?=htmlspecialchars($i, ENT_QUOTES, 'UTF-8');?>"><?=htmlspecialchars($i, ENT_QUOTES, 'UTF-8');?></option>
                                     <? } ?>        
                                 </select>
                               </div>
@@ -79,7 +79,7 @@ else
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label for="fullname">Term</label>
-                                <input data-validation="required" value="<?=$row['vterm'];?>" id="vterm" name="vterm" type="date" class="form-control"> 
+                                <input data-validation="required" value="<?=htmlspecialchars($row['vterm'], ENT_QUOTES, 'UTF-8');?>" id="vterm" name="vterm" type="date" class="form-control">
                               </div>
                             </div>
                             <div class="col-sm-12">
@@ -90,7 +90,7 @@ else
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label for="fullname">CODE</label>
-                                <input maxlength="10" data-validation="required" value="<?=$row['vcode'];?>" id="vcode" name="vcode" type="text" class="form-control">
+                                <input maxlength="10" data-validation="required" value="<?=htmlspecialchars($row['vcode'], ENT_QUOTES, 'UTF-8');?>" id="vcode" name="vcode" type="text" class="form-control">
                               </div>
                             </div>
                           

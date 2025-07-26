@@ -38,12 +38,12 @@ if($_SESSION['admin']=='' or $_SESSION['admin']!="yes")
             <div class="container">
                 <div class="col-lg-12">
                     <div class="totle_pic_div">
-                    	UnUse Codes <span class="pic_box"><?=$no_code_total;?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        UnUse Codes <span class="pic_box"><?=htmlspecialchars($no_code_total, ENT_QUOTES, 'UTF-8');?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </div>
                 </div>
                 <?php if($_SESSION['rep_manage_msg']!="")
                     {?>
-                       <div class="col-sm-12"> <div class="msg_div_rep_manage"><?=$_SESSION['rep_manage_msg'];?></div></div>
+                       <div class="col-sm-12"> <div class="msg_div_rep_manage"><?=htmlspecialchars($_SESSION['rep_manage_msg'], ENT_QUOTES, 'UTF-8');?></div></div>
                     <? $_SESSION['rep_manage_msg']=''; } ?>
                 <div class="col-lg-12">
                 	<div class="col-lg-3">
@@ -83,16 +83,16 @@ if($_SESSION['admin']=='' or $_SESSION['admin']!="yes")
                     ?>
                         <div class="row">
                             <div class="column first">
-                        	<input name="checked_ids[]" type="checkbox" value="<?=$row_codes['vcid'];?>" />
+                                <input name="checked_ids[]" type="checkbox" value="<?=htmlspecialchars($row_codes['vcid'], ENT_QUOTES, 'UTF-8');?>" />
                         </div>
                             
                             <div class="column left">
-                            <?=$row_codes['vcode'];?>
+                            <?=htmlspecialchars($row_codes['vcode'], ENT_QUOTES, 'UTF-8');?>
                             
                             </div>
                             <div class="column middle">
                             <?
-                           echo $row_codes['rid'];
+                           echo htmlspecialchars($row_codes['rid'], ENT_QUOTES, 'UTF-8');
                             ?>
                             </div>
                             <div class="column right">

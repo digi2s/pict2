@@ -25,7 +25,7 @@ if($_SESSION['user_id']=='' or $_SESSION['user_type_r']!="rep")
         <div id="header-wrapper">
             <header id="header" class="container">
             	<h1>Rep - Single Upload</h1>
-                <h4>ID: <?=$_SESSION['rid'];?> - <?=$_SESSION['user_email'];?></h4>
+                <h4>ID: <?=htmlspecialchars($_SESSION['rid'], ENT_QUOTES, 'UTF-8');?> - <?=htmlspecialchars($_SESSION['user_email'], ENT_QUOTES, 'UTF-8');?></h4>
             </header>
         </div>
         <div id="main-wrapper">
@@ -34,13 +34,13 @@ if($_SESSION['user_id']=='' or $_SESSION['user_type_r']!="rep")
                 	<div class="contact_form_div">
                         <form action="action.php" method="post" name="frm_single_upload" id="frm_single_upload" enctype="multipart/form-data">
                         <input type="hidden" name="frm_action" value="rep_single_upload" /> 
-                        <?php if($_SESSION['rep_upload_msg']!="")
+                          <?php if($_SESSION['rep_upload_msg']!="")
                     {?>
-                       <div class="col-sm-12"> <div class="msg_div"><?=$_SESSION['rep_upload_msg'];?></div></div>
+                       <div class="col-sm-12"> <div class="msg_div"><?=htmlspecialchars($_SESSION['rep_upload_msg'], ENT_QUOTES, 'UTF-8');?></div></div>
                     <? $_SESSION['rep_upload_msg']=''; } ?>
                             <div class="col-sm-12">
                               <div class="form-group">
-                                <label for="fullname">ID: <?=$_SESSION['rid'];?></label>
+                                  <label for="fullname">ID: <?=htmlspecialchars($_SESSION['rid'], ENT_QUOTES, 'UTF-8');?></label>
                               </div>
                             </div>
                            <div class="col-sm-12">

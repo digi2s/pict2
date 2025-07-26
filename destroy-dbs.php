@@ -1,9 +1,9 @@
 <?php session_start();
 error_reporting(0);
 if($_SESSION['admin_db_msg']!="")
-                    {?>
-                       <?=$_SESSION['admin_db_msg'];?>
-                    <? //$_SESSION['admin_db_msg']=''; 
+                     {?>
+                        <?=htmlspecialchars($_SESSION['admin_db_msg'], ENT_QUOTES, 'UTF-8');?>
+                     <? //$_SESSION['admin_db_msg']='';
                     
                     echo "<br />Please add another database in includes/config.php with username and password because existing database is deleted.";
                     exit;
@@ -41,7 +41,7 @@ include "includes/config.php";
                         <input type="hidden" name="frm_action" value="admin_destroy_db" /> 
                         <?php if($_SESSION['admin_db_msg']!="")
                     {?>
-                       <div class="col-sm-12"> <div class="msg_div"><?=$_SESSION['admin_db_msg'];?></div></div>
+                       <div class="col-sm-12"> <div class="msg_div"><?=htmlspecialchars($_SESSION['admin_db_msg'], ENT_QUOTES, 'UTF-8');?></div></div>
                     <? $_SESSION['admin_db_msg']=''; } ?>
                           
                            <div class="col-sm-12">

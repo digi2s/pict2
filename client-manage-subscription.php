@@ -30,7 +30,7 @@ if($_SESSION['user_id']=='' or $_SESSION['user_type_r']!="client")
         <div id="header-wrapper">
             <header id="header" class="container">
             	<h1>Client - Manage Subscriptions</h1>
-                <h4>ID: <?=$_SESSION['cid'];?> - <?=$_SESSION['user_email'];?></h4>
+                <h4>ID: <?=htmlspecialchars($_SESSION['cid'], ENT_QUOTES, 'UTF-8');?> - <?=htmlspecialchars($_SESSION['user_email'], ENT_QUOTES, 'UTF-8');?></h4>
             </header>
         </div>
         <div id="main-wrapper">
@@ -38,12 +38,12 @@ if($_SESSION['user_id']=='' or $_SESSION['user_type_r']!="client")
             <div class="container">
                 <div class="col-lg-12">
                     <div class="totle_pic_div">
-                    	Total Subscriptions <span class="pic_box"><?=$no_sub_total;?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        Total Subscriptions <span class="pic_box"><?=htmlspecialchars($no_sub_total, ENT_QUOTES, 'UTF-8');?></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </div>
                 </div>
                 <?php if($_SESSION['rep_manage_msg']!="")
                     {?>
-                       <div class="col-sm-12"> <div class="msg_div_rep_manage"><?=$_SESSION['rep_manage_msg'];?></div></div>
+                       <div class="col-sm-12"> <div class="msg_div_rep_manage"><?=htmlspecialchars($_SESSION['rep_manage_msg'], ENT_QUOTES, 'UTF-8');?></div></div>
                     <? $_SESSION['rep_manage_msg']=''; } ?>
                 <div class="col-lg-12">
                 	<div class="col-lg-3">
@@ -84,16 +84,16 @@ if($_SESSION['user_id']=='' or $_SESSION['user_type_r']!="client")
                     ?>
                         <div class="row">
                             <div class="column first">
-                        	<input name="checked_ids[]" type="checkbox" value="<?=$row_sub['s_id_key'];?>" />
+                                  <input name="checked_ids[]" type="checkbox" value="<?=htmlspecialchars($row_sub['s_id_key'], ENT_QUOTES, 'UTF-8');?>" />
                         </div>
                             <div class="column left">
-                            <a href="client-subscription-view-edit.php?sid=<?=$row_sub['s_id_key'];?>" target="_blank"><?=$row_model['rname'];?></a>
+                              <a href="client-subscription-view-edit.php?sid=<?=htmlspecialchars($row_sub['s_id_key'], ENT_QUOTES, 'UTF-8');?>" target="_blank"><?=htmlspecialchars($row_model['rname'], ENT_QUOTES, 'UTF-8');?></a>
                             </div>
                             <div class="column middle">
                            0
                             </div>
                             <div class="column right">
-                           <?=$row_sub['slevel'];?>
+                             <?=htmlspecialchars($row_sub['slevel'], ENT_QUOTES, 'UTF-8');?>
                             </div>
                         </div>
                         <? $no--; } ?>

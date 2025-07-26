@@ -29,9 +29,9 @@ if($_SESSION['admin']=='' or $_SESSION['admin']!="yes")
         </div>
         <div id="main-wrapper">
             <div class="container">
-            	<?php if($_SESSION['rep_manage_msg']!="")
+            <?php if($_SESSION['rep_manage_msg']!="")
                     {?>
-                       <div class="col-sm-12"> <div class="msg_div"><?=$_SESSION['rep_manage_msg'];?></div></div>
+                       <div class="col-sm-12"> <div class="msg_div"><?=htmlspecialchars($_SESSION['rep_manage_msg'], ENT_QUOTES, 'UTF-8');?></div></div>
                     <? $_SESSION['rep_manage_msg']=''; } ?>
                 <div class="col-lg-12">
                 	<div class="admin_bt">

@@ -49,7 +49,7 @@ $row_model = mysqli_fetch_array($rs_model);
         <div id="header-wrapper">
             <header id="header" class="container">
             	<h1>Client - Edit Subscriptions</h1>
-                <h4>ID: <?=$_SESSION['cid'];?> - <?=$_SESSION['user_email'];?>  STATUS: <?=$sub_status;?></h4>
+                <h4>ID: <?=htmlspecialchars($_SESSION['cid'], ENT_QUOTES, 'UTF-8');?> - <?=htmlspecialchars($_SESSION['user_email'], ENT_QUOTES, 'UTF-8');?>  STATUS: <?=htmlspecialchars($sub_status, ENT_QUOTES, 'UTF-8');?></h4>
             </header>
         </div>
         <div id="main-wrapper">
@@ -60,12 +60,12 @@ $row_model = mysqli_fetch_array($rs_model);
                        
                          <?php if($_SESSION['rep_msg']!="")
                     {?>
-                       <div class="col-sm-12"> <div class="msg_div"><?=$_SESSION['rep_msg'];?></div></div>
+                       <div class="col-sm-12"> <div class="msg_div"><?=htmlspecialchars($_SESSION['rep_msg'], ENT_QUOTES, 'UTF-8');?></div></div>
                     <? $_SESSION['rep_msg']=''; } ?>
                         
                             <div class="col-sm-12">
                               <div class="form-group">
-                                <label for="fullname">Model:</label> <?=$row_model['rname'];?><br />
+                                <label for="fullname">Model:</label> <?=htmlspecialchars($row_model['rname'], ENT_QUOTES, 'UTF-8');?><br />
                                 <?php 
                                 $rid = $row['rid'];
                                 $qry_pics = "SELECT * FROM picts WHERE pdate = '" . date('Y-m-d')."' && rid='".$rid."' && pstatus = '1' limit 0,1";
@@ -76,7 +76,7 @@ $row_model = mysqli_fetch_array($rs_model);
                                 if (file_exists($model_pic)) 
                                 {
                                 ?>
-                                <img width="150" height="150" src="<?=$model_pic;?>" alt="Picture display here" />
+                                  <img width="150" height="150" src="<?=htmlspecialchars($model_pic, ENT_QUOTES, 'UTF-8');?>" alt="Picture display here" />
                                 <? }else{ ?>
                                 <img width="150" height="150" src="images/imagenotfound.png" alt="Picture display here" />
                                 <? } ?>
@@ -87,7 +87,7 @@ $row_model = mysqli_fetch_array($rs_model);
                             <div class="col-sm-12">
                             <div class="form-group-bt">
                                 Stars: 0 <br />
-                                Level: <?=$row['slevel'];?><br />
+                                  Level: <?=htmlspecialchars($row['slevel'], ENT_QUOTES, 'UTF-8');?><br />
                                 </div>
                             </div>
                            
@@ -106,7 +106,7 @@ $row_model = mysqli_fetch_array($rs_model);
     </div>
     <form action="action.php" method="post" name="frm_operation">
         <input type="hidden" name="frm_action" id="frm_action" value="" /> 
-        <input type="hidden" name="sid" id="sid" value="<?=$_GET['sid'];?>" /> 
+        <input type="hidden" name="sid" id="sid" value="<?=htmlspecialchars($_GET['sid'], ENT_QUOTES, 'UTF-8');?>" />
         
     </form>
 </body>
